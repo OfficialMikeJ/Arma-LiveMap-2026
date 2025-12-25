@@ -1,0 +1,47 @@
+{
+  "servers": [
+    {
+      "id": 1,
+      "name": "Test Server 1",
+      "ip": "127.0.0.1",
+      "port": 2001,
+      "enabled": true
+    },
+    {
+      "id": 2,
+      "name": "Server Slot 2",
+      "ip": "",
+      "port": 0,
+      "enabled": false
+    },
+    {
+      "id": 3,
+      "name": "Server Slot 3",
+      "ip": "",
+      "port": 0,
+      "enabled": false
+    },
+    {
+      "id": 4,
+      "name": "Server Slot 4",
+      "ip": "",
+      "port": 0,
+      "enabled": false
+    },
+    {
+      "id": 5,
+      "name": "Server Slot 5",
+      "ip": "",
+      "port": 0,
+      "enabled": false
+    },
+    {
+      "id": 6,
+      "name": "Server Slot 6",
+      "ip": "",
+      "port": 0,
+      "enabled": false
+    }
+  ],
+  "websocket_port": 8765
+}
