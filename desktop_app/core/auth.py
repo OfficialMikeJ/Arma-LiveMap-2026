@@ -1,7 +1,7 @@
 import pyotp
 import qrcode
 from io import BytesIO
-from PyQt5.QtGui import QPixmap
+from PySide6.QtGui import QPixmap
 from core.database import Database
 
 
