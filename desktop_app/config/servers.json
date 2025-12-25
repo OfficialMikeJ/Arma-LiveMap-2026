@@ -2,9 +2,9 @@
   "servers": [
     {
       "id": 1,
-      "name": "Test Server 1",
-      "ip": "127.0.0.1",
-      "port": 2001,
+      "name": "My Test Server",
+      "ip": "192.168.1.100",
+      "port": 2302,
       "enabled": true
     },
     {
