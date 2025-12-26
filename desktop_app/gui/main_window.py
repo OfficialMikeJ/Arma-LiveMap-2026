@@ -1,14 +1,19 @@
 from PySide6.QtWidgets import (QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
                                 QPushButton, QLabel, QComboBox, QToolBar,
-                                QStatusBar, QMessageBox)
+                                QStatusBar, QMessageBox, QCheckBox, QGroupBox,
+                                QScrollArea, QFrame)
 from PySide6.QtCore import Qt, QThread, Signal
 from PySide6.QtGui import QAction, QIcon
 from gui.styles import DARK_THEME
 from gui.settings_window import SettingsWindow, TOTPVerifyDialog
-from map.map_viewer import MapViewer
+from gui.feedback_dialog import FeedbackDialog
+from map.map_viewer import MapViewer, ARMA_MARKER_TYPES
 import json
 import asyncio
 import websockets
+
+# Version information
+VERSION = "0.099.021"
 
 
 class WebSocketClient(QThread):
