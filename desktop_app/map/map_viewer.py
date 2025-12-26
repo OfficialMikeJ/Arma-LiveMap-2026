@@ -44,12 +44,18 @@ class MapViewer(QGraphicsView):
         self.setScene(self.scene)
         self.markers = {}
         self.marker_mode = "enemy"
+        self.zoom_level = 1.0
+        self.marker_filters = {marker_type: True for marker_type in ARMA_MARKER_TYPES.keys()}
         
         self.setRenderHint(QPainter.Antialiasing)
         self.setRenderHint(QPainter.SmoothPixmapTransform)
         self.setDragMode(QGraphicsView.ScrollHandDrag)
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        
+        # Enable better scrolling and zooming
+        self.setTransformationAnchor(QGraphicsView.AnchorUnderMouse)
+        self.setResizeAnchor(QGraphicsView.AnchorUnderMouse)
         
         # Set background
         self.setStyleSheet("background-color: #0d0d0d;")
