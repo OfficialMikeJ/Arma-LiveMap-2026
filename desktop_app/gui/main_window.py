@@ -389,6 +389,11 @@ class MainWindow(QMainWindow):
         # Refresh server list after settings close
         self.update_server_list()
     
+    def show_feedback(self):
+        """Show feedback dialog"""
+        feedback = FeedbackDialog(self.user_id, self.username, self)
+        feedback.exec()
+    
     def refresh_connection(self):
         """Refresh WebSocket connection"""
         if self.ws_client:
