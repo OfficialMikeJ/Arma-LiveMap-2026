@@ -234,12 +234,49 @@ All data stored in: `data/arma_map.db` (SQLite database)
 3. Enter server name, IP address, and port
 4. Click "Save Server Configuration"
 
-### Using the Map
+### Using the Map (v0.096.014)
 
-1. Select marker type from dropdown (Enemy, Friendly, Objective, Other)
+1. Select marker type from dropdown
 2. Click on the map to place a marker
 3. Click on an existing marker to remove it
 4. Markers are synchronized in real-time with other users
+
+### Using the Map (v0.099.021 - New Features)
+
+1. **Zoom Controls**:
+   - Click "+" or "−" buttons in toolbar to zoom
+   - Or hold **Ctrl** and scroll **Mouse Wheel** up/down
+   - Click "Reset" to return to 100% zoom
+   
+2. **Select Marker Type**:
+   - Choose from 13 vanilla Arma Reforger marker types
+   - Different shapes for different tactical purposes
+   - Enemy, Friendly, Attack, Defend, Pickup, Drop, Meet, Infantry, Armor, Air, Naval, Objective, Other
+
+3. **Place Markers**:
+   - Click anywhere on the map to place selected marker type
+   - Markers sync instantly to all connected users
+   - Different colors and shapes for easy identification
+
+4. **Filter Markers**:
+   - Use sidebar on right to show/hide marker types
+   - Check/uncheck individual marker types
+   - Click "All" to show everything, "None" to hide all
+
+5. **Submit Feedback**:
+   - Click "📝 Feedback" button in toolbar
+   - Report bugs, request features, or share suggestions
+   - Join Discord community for updates
+
+### Submitting Feedback (v0.099.021 - New)
+
+1. Click "📝 Feedback" in the toolbar
+2. Fill in subject and feedback details
+3. Optionally provide your email
+4. Click "Submit Feedback"
+5. Join Discord community via the Discord button
+
+**Note**: Feedback is currently stored locally. Admin dashboard integration coming in future update for centralized feedback management.
 
 ## Data Storage
 
