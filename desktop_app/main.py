@@ -43,7 +43,8 @@ class ArmaMapApplication:
         
         # Initialize Qt Application
         self.app = QApplication(sys.argv)
-        self.app.setApplicationName("Arma Reforger Live Map")
+        self.app.setApplicationName(f"Arma Reforger Live Map v{VERSION}")
+        self.app.setApplicationVersion(VERSION)
         
         # Check for existing session
         self.main_window = None
