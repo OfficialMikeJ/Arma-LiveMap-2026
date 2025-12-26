@@ -191,22 +191,97 @@ class MapViewer(QGraphicsView):
         if marker.id in self.markers:
             return
         
-        # Determine color based on marker type
-        if marker.type == "enemy":
-            color = QColor(220, 50, 50)
-        elif marker.type == "friendly":
-            color = QColor(50, 150, 220)
-        elif marker.type == "objective":
-            color = QColor(220, 180, 50)
-        else:
-            color = QColor(150, 150, 150)
+        # Get marker configuration
+        marker_config = ARMA_MARKER_TYPES.get(marker.type, ARMA_MARKER_TYPES['other'])
+        color = marker_config['color']
+        shape = marker_config['shape']
         
-        # Create marker circle
-        marker_item = QGraphicsEllipseItem(marker.x - 10, marker.y - 10, 20, 20)
-        marker_item.setBrush(QBrush(color))
-        marker_item.setPen(QPen(QColor(255, 255, 255), 2))
+        # Create marker based on shape
+        size = 20
+        half_size = size / 2
+        
+        if shape == 'circle':
+            marker_item = QGraphicsEllipseItem(marker.x - half_size, marker.y - half_size, size, size)
+            marker_item.setBrush(QBrush(color))
+            marker_item.setPen(QPen(QColor(255, 255, 255), 2))
+        
+        elif shape == 'square':
+            from PySide6.QtWidgets import QGraphicsRectItem
+            marker_item = QGraphicsRectItem(marker.x - half_size, marker.y - half_size, size, size)
+            marker_item.setBrush(QBrush(color))
+            marker_item.setPen(QPen(QColor(255, 255, 255), 2))
+        
+        elif shape == 'diamond':
+            polygon = QPolygonF([
+                QPointF(marker.x, marker.y - half_size),  # Top
+                QPointF(marker.x + half_size, marker.y),  # Right
+                QPointF(marker.x, marker.y + half_size),  # Bottom
+                QPointF(marker.x - half_size, marker.y)   # Left
+            ])
+            marker_item = QGraphicsPolygonItem(polygon)
+            marker_item.setBrush(QBrush(color))
+            marker_item.setPen(QPen(QColor(255, 255, 255), 2))
+        
+        elif shape == 'triangle_up':
+            polygon = QPolygonF([
+                QPointF(marker.x, marker.y - half_size),           # Top
+                QPointF(marker.x + half_size, marker.y + half_size),  # Bottom right
+                QPointF(marker.x - half_size, marker.y + half_size)   # Bottom left
+            ])
+            marker_item = QGraphicsPolygonItem(polygon)
+            marker_item.setBrush(QBrush(color))
+            marker_item.setPen(QPen(QColor(255, 255, 255), 2))
+        
+        elif shape == 'triangle_down':
+            polygon = QPolygonF([
+                QPointF(marker.x, marker.y + half_size),           # Bottom
+                QPointF(marker.x + half_size, marker.y - half_size),  # Top right
+                QPointF(marker.x - half_size, marker.y - half_size)   # Top left
+            ])
+            marker_item = QGraphicsPolygonItem(polygon)
+            marker_item.setBrush(QBrush(color))
+            marker_item.setPen(QPen(QColor(255, 255, 255), 2))
+        
+        elif shape == 'arrow':
+            polygon = QPolygonF([
+                QPointF(marker.x, marker.y - half_size),           # Tip
+                QPointF(marker.x + half_size/2, marker.y),         # Right middle
+                QPointF(marker.x + half_size/3, marker.y),         # Right inner
+                QPointF(marker.x + half_size/3, marker.y + half_size),  # Right bottom
+                QPointF(marker.x - half_size/3, marker.y + half_size),  # Left bottom
+                QPointF(marker.x - half_size/3, marker.y),         # Left inner
+                QPointF(marker.x - half_size/2, marker.y)          # Left middle
+            ])
+            marker_item = QGraphicsPolygonItem(polygon)
+            marker_item.setBrush(QBrush(color))
+            marker_item.setPen(QPen(QColor(255, 255, 255), 2))
+        
+        elif shape == 'star':
+            # 5-point star
+            import math
+            points = []
+            for i in range(10):
+                angle = math.pi / 2 + (2 * math.pi * i / 10)
+                radius = half_size if i % 2 == 0 else half_size / 2
+                x = marker.x + radius * math.cos(angle)
+                y = marker.y - radius * math.sin(angle)
+                points.append(QPointF(x, y))
+            marker_item = QGraphicsPolygonItem(QPolygonF(points))
+            marker_item.setBrush(QBrush(color))
+            marker_item.setPen(QPen(QColor(255, 255, 255), 2))
+        
+        else:
+            # Default to circle
+            marker_item = QGraphicsEllipseItem(marker.x - half_size, marker.y - half_size, size, size)
+            marker_item.setBrush(QBrush(color))
+            marker_item.setPen(QPen(QColor(255, 255, 255), 2))
+        
         marker_item.setZValue(100)
         marker_item.marker_id = marker.id
+        
+        # Apply current filter
+        visible = self.marker_filters.get(marker.type, True)
+        marker_item.setVisible(visible)
         
         self.scene.addItem(marker_item)
         self.markers[marker.id] = {'marker': marker, 'item': marker_item}
