@@ -113,6 +113,54 @@ class MapViewer(QGraphicsView):
         """Set marker mode (enemy, friendly, objective, etc.)"""
         self.marker_mode = mode
     
+    def zoom_in(self):
+        """Zoom in on the map"""
+        factor = 1.25
+        self.zoom_level *= factor
+        if self.zoom_level > 5.0:
+            self.zoom_level = 5.0
+            factor = 1.0
+        self.scale(factor, factor)
+    
+    def zoom_out(self):
+        """Zoom out on the map"""
+        factor = 0.8
+        self.zoom_level *= factor
+        if self.zoom_level < 0.25:
+            self.zoom_level = 0.25
+            factor = 1.0
+        self.scale(factor, factor)
+    
+    def reset_zoom(self):
+        """Reset zoom to 100%"""
+        self.resetTransform()
+        self.zoom_level = 1.0
+    
+    def wheelEvent(self, event: QWheelEvent):
+        """Handle mouse wheel for zooming when Ctrl is pressed"""
+        if event.modifiers() == Qt.ControlModifier:
+            # Zoom with Ctrl + Mouse Wheel
+            if event.angleDelta().y() > 0:
+                self.zoom_in()
+            else:
+                self.zoom_out()
+            event.accept()
+        else:
+            # Normal scroll behavior
+            super().wheelEvent(event)
+    
+    def set_marker_filter(self, marker_type, visible):
+        """Set visibility filter for marker type"""
+        self.marker_filters[marker_type] = visible
+        self.apply_filters()
+    
+    def apply_filters(self):
+        """Apply visibility filters to all markers"""
+        for marker_id, marker_data in self.markers.items():
+            marker_type = marker_data['marker'].type
+            visible = self.marker_filters.get(marker_type, True)
+            marker_data['item'].setVisible(visible)
+    
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
             # Get scene position
