@@ -48,14 +48,14 @@ jobs:
         powershell Compress-Archive -Path ArmaReforgerMap -DestinationPath ArmaReforgerMap-Windows-Portable.zip
     
     - name: Upload artifact (Folder)
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ArmaReforgerMap-Windows-Portable
         path: release/ArmaReforgerMap/
         retention-days: 30
     
     - name: Upload artifact (ZIP)
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ArmaReforgerMap-Windows-ZIP
         path: release/ArmaReforgerMap-Windows-Portable.zip
