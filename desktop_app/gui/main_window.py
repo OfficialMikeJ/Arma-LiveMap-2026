@@ -204,7 +204,72 @@ class MainWindow(QMainWindow):
         self.setStatusBar(self.status_bar)
         self.status_bar.showMessage(f"Logged in as {self.username} | Version {VERSION}")
     
-    def update_server_list(self):
+    def create_filter_sidebar(self):
+        """Create sidebar with marker filters"""
+        sidebar_widget = QFrame()
+        sidebar_widget.setFrameShape(QFrame.StyledPanel)
+        sidebar_widget.setStyleSheet("QFrame { background-color: #1a1a1a; border-left: 2px solid #3a3a3a; }")
+        sidebar_widget.setMaximumWidth(250)
+        
+        sidebar_layout = QVBoxLayout()
+        
+        # Title
+        title = QLabel("Marker Filters")
+        title.setStyleSheet("font-size: 12pt; font-weight: bold; color: #5a7a51; padding: 10px;")
+        sidebar_layout.addWidget(title)
+        
+        # Scroll area for filters
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setStyleSheet("QScrollArea { border: none; }")
+        
+        filter_widget = QWidget()
+        filter_layout = QVBoxLayout()
+        
+        self.filter_checkboxes = {}
+        
+        for marker_key, marker_data in ARMA_MARKER_TYPES.items():
+            checkbox = QCheckBox(marker_data['name'])
+            checkbox.setChecked(True)
+            checkbox.stateChanged.connect(lambda state, mk=marker_key: self.on_filter_changed(mk, state))
+            filter_layout.addWidget(checkbox)
+            self.filter_checkboxes[marker_key] = checkbox
+        
+        filter_layout.addStretch()
+        filter_widget.setLayout(filter_layout)
+        scroll.setWidget(filter_widget)
+        
+        sidebar_layout.addWidget(scroll)
+        
+        # Select/Deselect all buttons
+        button_layout = QHBoxLayout()
+        select_all_btn = QPushButton("All")
+        select_all_btn.clicked.connect(self.select_all_filters)
+        button_layout.addWidget(select_all_btn)
+        
+        deselect_all_btn = QPushButton("None")
+        deselect_all_btn.clicked.connect(self.deselect_all_filters)
+        button_layout.addWidget(deselect_all_btn)
+        
+        sidebar_layout.addLayout(button_layout)
+        
+        sidebar_widget.setLayout(sidebar_layout)
+        return sidebar_widget
+    
+    def on_filter_changed(self, marker_type, state):
+        """Handle filter checkbox state change"""
+        visible = (state == Qt.Checked)
+        self.map_viewer.set_marker_filter(marker_type, visible)
+    
+    def select_all_filters(self):
+        """Select all marker filters"""
+        for checkbox in self.filter_checkboxes.values():
+            checkbox.setChecked(True)
+    
+    def deselect_all_filters(self):
+        """Deselect all marker filters"""
+        for checkbox in self.filter_checkboxes.values():
+            checkbox.setChecked(False)
         """Update server dropdown with enabled servers"""
         self.server_combo.clear()
         enabled_servers = self.server_manager.get_enabled_servers()
