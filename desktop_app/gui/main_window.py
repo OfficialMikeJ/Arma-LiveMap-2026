@@ -365,9 +365,11 @@ class MainWindow(QMainWindow):
         if index >= 0:
             self.status_bar.showMessage(f"Connected to: {self.server_combo.currentText()}")
     
-    def on_marker_type_changed(self, marker_type):
+    def on_marker_type_changed(self, index):
         """Handle marker type change"""
-        self.map_viewer.set_marker_mode(marker_type.lower())
+        marker_key = self.marker_type_combo.itemData(index)
+        if marker_key:
+            self.map_viewer.set_marker_mode(marker_key)
     
     def clear_my_markers(self):
         """Clear all markers placed by current user"""
