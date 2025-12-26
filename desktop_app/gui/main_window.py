@@ -110,11 +110,28 @@ class MainWindow(QMainWindow):
         
         toolbar.addSeparator()
         
+        # Zoom controls
+        toolbar.addWidget(QLabel("Zoom: "))
+        zoom_in_button = QPushButton("+ Zoom In")
+        zoom_in_button.clicked.connect(self.map_viewer.zoom_in)
+        toolbar.addWidget(zoom_in_button)
+        
+        zoom_out_button = QPushButton("− Zoom Out")
+        zoom_out_button.clicked.connect(self.map_viewer.zoom_out)
+        toolbar.addWidget(zoom_out_button)
+        
+        reset_zoom_button = QPushButton("⟲ Reset")
+        reset_zoom_button.clicked.connect(self.map_viewer.reset_zoom)
+        toolbar.addWidget(reset_zoom_button)
+        
+        toolbar.addSeparator()
+        
         # Marker type selector
         toolbar.addWidget(QLabel("Marker Type: "))
         self.marker_type_combo = QComboBox()
-        self.marker_type_combo.addItems(["Enemy", "Friendly", "Objective", "Other"])
-        self.marker_type_combo.currentTextChanged.connect(self.on_marker_type_changed)
+        for marker_key, marker_data in ARMA_MARKER_TYPES.items():
+            self.marker_type_combo.addItem(marker_data['name'], marker_key)
+        self.marker_type_combo.currentIndexChanged.connect(self.on_marker_type_changed)
         toolbar.addWidget(self.marker_type_combo)
         
         toolbar.addSeparator()
@@ -126,27 +143,34 @@ class MainWindow(QMainWindow):
         
         toolbar.addSeparator()
         
+        # Feedback button
+        feedback_button = QPushButton("📝 Feedback")
+        feedback_button.clicked.connect(self.show_feedback)
+        feedback_button.setStyleSheet("QPushButton { background-color: #4a5a46; }")
+        toolbar.addWidget(feedback_button)
+        
         # Settings button
-        settings_button = QPushButton("Settings")
+        settings_button = QPushButton("⚙ Settings")
         settings_button.clicked.connect(self.show_settings)
         toolbar.addWidget(settings_button)
         
         # Refresh button
-        refresh_button = QPushButton("Refresh")
+        refresh_button = QPushButton("↻ Refresh")
         refresh_button.clicked.connect(self.refresh_connection)
         toolbar.addWidget(refresh_button)
         
-        # Main widget
-        central_widget = QWidget()
-        self.setCentralWidget(central_widget)
+        # Main widget with sidebar
+        main_widget = QWidget()
+        self.setCentralWidget(main_widget)
         
-        layout = QVBoxLayout()
+        main_layout = QHBoxLayout()
         
-        # Map viewer
+        # Map viewer (main area)
+        map_layout = QVBoxLayout()
         self.map_viewer = MapViewer(self.user_id)
         self.map_viewer.marker_added.connect(self.on_marker_added)
         self.map_viewer.marker_removed.connect(self.on_marker_removed)
-        layout.addWidget(self.map_viewer)
+        map_layout.addWidget(self.map_viewer)
         
         # Info bar
         info_layout = QHBoxLayout()
@@ -156,17 +180,29 @@ class MainWindow(QMainWindow):
         
         info_layout.addStretch()
         
+        zoom_info = QLabel("Tip: Hold Ctrl + Mouse Wheel to zoom")
+        zoom_info.setStyleSheet("color: #808080; font-size: 9pt;")
+        info_layout.addWidget(zoom_info)
+        
+        info_layout.addStretch()
+        
         self.player_count = QLabel("Players: 0")
         info_layout.addWidget(self.player_count)
         
-        layout.addLayout(info_layout)
+        map_layout.addLayout(info_layout)
         
-        central_widget.setLayout(layout)
+        main_layout.addLayout(map_layout, stretch=4)
+        
+        # Sidebar for filters
+        sidebar = self.create_filter_sidebar()
+        main_layout.addWidget(sidebar, stretch=1)
+        
+        main_widget.setLayout(main_layout)
         
         # Status bar
         self.status_bar = QStatusBar()
         self.setStatusBar(self.status_bar)
-        self.status_bar.showMessage(f"Logged in as {self.username}")
+        self.status_bar.showMessage(f"Logged in as {self.username} | Version {VERSION}")
     
     def update_server_list(self):
         """Update server dropdown with enabled servers"""
