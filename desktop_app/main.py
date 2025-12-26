@@ -11,6 +11,10 @@ from core.auth import AuthManager
 from core.server_manager import ServerManager
 from core.websocket_server import WebSocketServer
 
+# Version information
+VERSION = "0.099.021"
+PREVIOUS_VERSION = "0.096.014"
+
 
 class ArmaMapApplication:
     def __init__(self):
