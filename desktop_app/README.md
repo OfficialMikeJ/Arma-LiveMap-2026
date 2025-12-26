@@ -177,7 +177,40 @@ jobs:
         path: desktop_app/dist/
 ```
 
-## Usage
+## 🔒 Security & Privacy
+
+### Data Protection
+- **Local Storage Only**: All data remains on your machine
+- **Zero Internet Transmission**: No data sent to external servers
+- **Encrypted Passwords**: SHA-256 hashing for password storage
+- **Encrypted Security Answers**: Fernet encryption for sensitive data
+- **Secure Sessions**: Cryptographically random tokens
+- **Device Binding**: Sessions tied to specific devices
+
+### What Data is Stored Locally
+- User accounts (username, hashed password)
+- Security questions and encrypted answers
+- TOTP/QR secrets (encrypted)
+- Session tokens
+- Server configurations
+- Map markers (temporary, for session)
+- Feedback submissions (until admin dashboard integration)
+
+### What is NOT Stored or Transmitted
+- ❌ Plain text passwords
+- ❌ Server credentials or sensitive server information
+- ❌ Player positions or game data
+- ❌ Personal information beyond what you provide
+- ❌ Usage analytics or telemetry
+
+### Database Location
+All data stored in: `data/arma_map.db` (SQLite database)
+
+**Note**: Keep this file secure and backed up if needed. Deleting it will remove all user accounts and settings.
+
+---
+
+## 📖 Usage
 
 ### First Time Setup
 
