@@ -1,6 +1,6 @@
-from PySide6.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsEllipseItem, QGraphicsTextItem
+from PySide6.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsEllipseItem, QGraphicsTextItem, QGraphicsPolygonItem
 from PySide6.QtCore import Qt, QPointF, Signal
-from PySide6.QtGui import QColor, QPen, QBrush, QPixmap, QPainter
+from PySide6.QtGui import QColor, QPen, QBrush, QPixmap, QPainter, QPolygonF, QWheelEvent
 from datetime import datetime
 
 
@@ -13,6 +13,24 @@ class MapMarker:
         self.user_id = user_id
         self.description = description
         self.timestamp = datetime.now().isoformat()
+
+
+# Vanilla Arma Reforger marker types
+ARMA_MARKER_TYPES = {
+    'enemy': {'name': 'Enemy', 'color': QColor(220, 50, 50), 'shape': 'circle'},
+    'friendly': {'name': 'Friendly', 'color': QColor(50, 150, 220), 'shape': 'circle'},
+    'attack': {'name': 'Attack', 'color': QColor(220, 50, 50), 'shape': 'arrow'},
+    'defend': {'name': 'Defend', 'color': QColor(50, 150, 220), 'shape': 'square'},
+    'objective': {'name': 'Objective', 'color': QColor(220, 180, 50), 'shape': 'diamond'},
+    'pickup': {'name': 'Pickup', 'color': QColor(100, 220, 100), 'shape': 'triangle_up'},
+    'drop': {'name': 'Drop', 'color': QColor(220, 100, 100), 'shape': 'triangle_down'},
+    'meet': {'name': 'Meet', 'color': QColor(150, 100, 220), 'shape': 'star'},
+    'infantry': {'name': 'Infantry', 'color': QColor(100, 150, 100), 'shape': 'circle'},
+    'armor': {'name': 'Armor', 'color': QColor(150, 150, 50), 'shape': 'square'},
+    'air': {'name': 'Air', 'color': QColor(100, 180, 220), 'shape': 'triangle_up'},
+    'naval': {'name': 'Naval', 'color': QColor(50, 100, 220), 'shape': 'diamond'},
+    'other': {'name': 'Other', 'color': QColor(150, 150, 150), 'shape': 'circle'}
+}
 
 
 class MapViewer(QGraphicsView):
