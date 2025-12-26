@@ -72,7 +72,7 @@ class MainWindow(QMainWindow):
         self.session_token = session_token
         self.ws_client = None
         
-        self.setWindowTitle(f"Arma Reforger - Live Map [{username}]")
+        self.setWindowTitle(f"Arma Reforger - Live Map v{VERSION} [{username}]")
         self.setMinimumSize(1200, 800)
         self.setStyleSheet(DARK_THEME)
         
