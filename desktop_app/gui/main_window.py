@@ -14,7 +14,7 @@ import asyncio
 import websockets
 
 # Version information
-VERSION = "0.099.021"
+VERSION = "0.099.022"
 
 
 class WebSocketClient(QThread):
