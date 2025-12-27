@@ -50,6 +50,33 @@ class ServerManager:
                 break
         self.save_config()
     
+    def add_server(self, name: str, ip: str, port: int, enabled: bool = True) -> int:
+        """Add a new server to the list"""
+        # Find next available ID
+        existing_ids = [s['id'] for s in self.servers]
+        next_id = max(existing_ids) + 1 if existing_ids else 1
+        
+        new_server = {
+            'id': next_id,
+            'name': name,
+            'ip': ip,
+            'port': port,
+            'enabled': enabled
+        }
+        
+        self.servers.append(new_server)
+        self.save_config()
+        return next_id
+    
+    def remove_server(self, server_id: int) -> bool:
+        """Remove a server from the list"""
+        for i, server in enumerate(self.servers):
+            if server['id'] == server_id:
+                self.servers.pop(i)
+                self.save_config()
+                return True
+        return False
+    
     def query_server_info(self, ip: str, port: int) -> Optional[Dict]:
         """Query server for map and player information
         Note: This is a placeholder - actual implementation depends on Arma Reforger server API
