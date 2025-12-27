@@ -55,8 +55,15 @@ class WebSocketClient(QThread):
             self.disconnected.emit()
     
     def send_message(self, data):
-        if self.websocket:
-            asyncio.run(self.websocket.send(json.dumps(data)))
+        """Send message to WebSocket server"""
+        if self.websocket and not self.websocket.closed:
+            try:
+                # Create new event loop for sending
+                loop = asyncio.new_event_loop()
+                loop.run_until_complete(self.websocket.send(json.dumps(data)))
+                loop.close()
+            except Exception as e:
+                print(f"Error sending message: {e}")
     
     def stop(self):
         self.running = False
@@ -340,7 +347,7 @@ class MainWindow(QMainWindow):
     
     def on_marker_added(self, marker):
         """Send marker to server"""
-        if self.ws_client and self.ws_client.websocket:
+        if self.ws_client:
             message = {
                 'type': 'marker_add',
                 'marker': {
@@ -352,22 +359,16 @@ class MainWindow(QMainWindow):
                     'timestamp': marker.timestamp
                 }
             }
-            try:
-                asyncio.run(self.ws_client.websocket.send(json.dumps(message)))
-            except Exception as e:
-                print(f"Error sending marker: {e}")
+            self.ws_client.send_message(message)
     
     def on_marker_removed(self, marker_id):
         """Send marker removal to server"""
-        if self.ws_client and self.ws_client.websocket:
+        if self.ws_client:
             message = {
                 'type': 'marker_remove',
                 'marker_id': marker_id
             }
-            try:
-                asyncio.run(self.ws_client.websocket.send(json.dumps(message)))
-            except Exception as e:
-                print(f"Error removing marker: {e}")
+            self.ws_client.send_message(message)
     
     def on_server_changed(self, index):
         """Handle server selection change"""
