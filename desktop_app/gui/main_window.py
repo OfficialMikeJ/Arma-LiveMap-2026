@@ -28,6 +28,7 @@ class WebSocketClient(QThread):
         self.port = port
         self.running = False
         self.websocket = None
+        self.send_queue = []
     
     def run(self):
         self.running = True
@@ -43,6 +44,12 @@ class WebSocketClient(QThread):
             # Listen for messages
             while self.running:
                 try:
+                    # Send any queued messages
+                    while self.send_queue and self.websocket:
+                        message = self.send_queue.pop(0)
+                        await self.websocket.send(json.dumps(message))
+                    
+                    # Receive messages with timeout
                     message = await asyncio.wait_for(self.websocket.recv(), timeout=0.1)
                     data = json.loads(message)
                     self.message_received.emit(data)
@@ -51,25 +58,24 @@ class WebSocketClient(QThread):
                 except websockets.exceptions.ConnectionClosed:
                     break
                 except Exception as e:
-                    print(f"Error receiving message: {e}")
+                    print(f"Error in message loop: {e}")
                     break
         except Exception as e:
             print(f"WebSocket connection error: {e}")
         finally:
             if self.websocket:
-                await self.websocket.close()
+                try:
+                    await self.websocket.close()
+                except:
+                    pass
             self.disconnected.emit()
     
     def send_message(self, data):
-        """Send message to WebSocket server"""
-        if self.websocket and not self.websocket.closed:
-            try:
-                # Create task to send message asynchronously
-                asyncio.create_task(self.websocket.send(json.dumps(data)))
-            except Exception as e:
-                print(f"Error sending message: {e}")
+        """Queue message to be sent to WebSocket server"""
+        if self.running:
+            self.send_queue.append(data)
         else:
-            print("WebSocket not connected, cannot send message")
+            print("WebSocket not running, cannot send message")
     
     def stop(self):
         self.running = False
