@@ -277,6 +277,8 @@ class MainWindow(QMainWindow):
         """Deselect all marker filters"""
         for checkbox in self.filter_checkboxes.values():
             checkbox.setChecked(False)
+    
+    def update_server_list(self):
         """Update server dropdown with enabled servers"""
         self.server_combo.clear()
         enabled_servers = self.server_manager.get_enabled_servers()
@@ -400,6 +402,50 @@ class MainWindow(QMainWindow):
         """Show feedback dialog"""
         feedback = FeedbackDialog(self.user_id, self.username, self)
         feedback.exec()
+    
+    def show_custom_server_dialog(self):
+        """Show dialog to add custom server"""
+        dialog = CustomServerDialog(self)
+        if dialog.exec():
+            server_info = dialog.get_server_info()
+            
+            # Add to server manager if save option is checked
+            if server_info['save']:
+                server_id = self.server_manager.add_server(
+                    server_info['name'],
+                    server_info['ip'],
+                    server_info['port'],
+                    enabled=True
+                )
+                
+                # Refresh server list
+                self.update_server_list()
+                
+                # Select the newly added server
+                for i in range(self.server_combo.count()):
+                    if self.server_combo.itemData(i) == server_id:
+                        self.server_combo.setCurrentIndex(i)
+                        break
+                
+                self.status_bar.showMessage(
+                    f"Server added: {server_info['name']} ({server_info['ip']}:{server_info['port']})"
+                )
+            else:
+                # Temporary connection without saving
+                self.status_bar.showMessage(
+                    f"Connecting to: {server_info['name']} ({server_info['ip']}:{server_info['port']})"
+                )
+            
+            # Show info message
+            QMessageBox.information(
+                self,
+                "Server Connected",
+                f"Now viewing map for:\n\n"
+                f"Server: {server_info['name']}\n"
+                f"IP: {server_info['ip']}\n"
+                f"Port: {server_info['port']}\n\n"
+                f"{'Server saved to your list.' if server_info['save'] else 'Temporary connection (not saved).'}"
+            )
     
     def refresh_connection(self):
         """Refresh WebSocket connection"""
