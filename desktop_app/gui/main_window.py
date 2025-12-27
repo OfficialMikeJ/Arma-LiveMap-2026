@@ -7,6 +7,7 @@ from PySide6.QtGui import QAction, QIcon
 from gui.styles import DARK_THEME
 from gui.settings_window import SettingsWindow, TOTPVerifyDialog
 from gui.feedback_dialog import FeedbackDialog
+from gui.custom_server_dialog import CustomServerDialog
 from map.map_viewer import MapViewer, ARMA_MARKER_TYPES
 import json
 import asyncio
@@ -107,6 +108,12 @@ class MainWindow(QMainWindow):
         self.update_server_list()
         self.server_combo.currentIndexChanged.connect(self.on_server_changed)
         toolbar.addWidget(self.server_combo)
+        
+        # Custom server button
+        custom_server_button = QPushButton("+ Custom Server")
+        custom_server_button.setStyleSheet("QPushButton { background-color: #3a5a36; }")
+        custom_server_button.clicked.connect(self.show_custom_server_dialog)
+        toolbar.addWidget(custom_server_button)
         
         toolbar.addSeparator()
         
