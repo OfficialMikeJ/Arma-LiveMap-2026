@@ -1,0 +1,80 @@
+{
+  "current_version": "0.099.024",
+  "upcoming_versions": [
+    {
+      "version": "0.100.030",
+      "year": 2026,
+      "release_date": "TBD",
+      "status": "planned",
+      "features": [
+        "Enhanced real-time functionality",
+        "Improved marker synchronization",
+        "Performance optimizations"
+      ]
+    },
+    {
+      "version": "0.103.045",
+      "year": 2026,
+      "release_date": "TBD",
+      "status": "planned",
+      "features": [
+        "Voice chat integration",
+        "Advanced filtering options",
+        "Custom marker types"
+      ]
+    },
+    {
+      "version": "0.107.059",
+      "year": 2026,
+      "release_date": "TBD",
+      "status": "planned",
+      "features": [
+        "Squad management",
+        "Team coordination tools",
+        "Drawing tools on map"
+      ]
+    },
+    {
+      "version": "0.116.079",
+      "year": 2026,
+      "release_date": "TBD",
+      "status": "planned",
+      "features": [
+        "Replay system",
+        "Statistics dashboard",
+        "Export/import functionality"
+      ]
+    },
+    {
+      "version": "0.124.094",
+      "year": 2026,
+      "release_date": "TBD",
+      "status": "planned",
+      "features": [
+        "Multi-language support",
+        "Plugin system",
+        "Advanced analytics"
+      ]
+    }
+  ],
+  "version_history": [
+    {
+      "version": "0.099.024",
+      "release_date": "2025-12-27",
+      "type": "hotfix",
+      "notes": "Fixed WebSocket connection error"
+    },
+    {
+      "version": "0.099.023",
+      "release_date": "2025-12-27",
+      "type": "major",
+      "notes": "Real-time WebSocket, Admin dashboard, Code refactoring"
+    },
+    {
+      "version": "0.099.022",
+      "release_date": "2025-12-27",
+      "type": "major",
+      "notes": "Database lock fix, Custom server input"
+    }
+  ]
+}
