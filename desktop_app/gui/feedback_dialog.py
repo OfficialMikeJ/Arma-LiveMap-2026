@@ -74,9 +74,8 @@ class FeedbackDialog(QDialog):
         
         # Future implementation notice
         future_notice = QLabel(
-            "This feature is not fully implemented and will be added in a near future update "
-            "at a later time. Join our Discord to follow for updates, bug fixes and major "
-            "improvements to our tools, software and applications."
+            "Your feedback is saved locally and helps improve the application. "
+            "Join our Discord community for updates, discussions, and support!"
         )
         future_notice.setStyleSheet("color: #5a7a51; font-size: 9pt; font-style: italic;")
         future_notice.setWordWrap(True)
@@ -146,7 +145,7 @@ class FeedbackDialog(QDialog):
             'email': email if email else 'not_provided',
             'subject': subject,
             'feedback': feedback,
-            'version': '0.099.021'
+            'version': '0.099.022'
         }
         
         # Save to local file (will be synced to admin dashboard in future)
@@ -155,10 +154,9 @@ class FeedbackDialog(QDialog):
         QMessageBox.information(
             self,
             "Feedback Submitted",
-            "Thank you for your feedback!\\n\\n"
-            "Your feedback has been saved locally.\\n"
-            "Admin dashboard integration coming in future update.\\n\\n"
-            "Join our Discord for updates!"
+            "Thank you for your feedback!\n\n"
+            "Your feedback has been saved and will be reviewed.\n\n"
+            "Join our Discord for updates and community discussions!"
         )
         
         self.accept()

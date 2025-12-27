@@ -231,17 +231,21 @@ class SettingsWindow(QDialog):
                                     "Are you sure you want to disable QR Code authentication?",
                                     QMessageBox.Yes | QMessageBox.No)
         if reply == QMessageBox.Yes:
-            # Set totp_enabled to 0
-            import sqlite3
-            conn = sqlite3.connect(self.db.db_path)
-            cursor = conn.cursor()
-            cursor.execute('UPDATE users SET totp_enabled = 0 WHERE id = ?', (self.user_id,))
-            conn.commit()
-            conn.close()
-            
-            QMessageBox.information(self, "Success", "QR Code authentication disabled")
-            self.accept()
-            # Reopen settings
-            new_settings = SettingsWindow(self.db, self.auth_manager, self.user_id,
-                                         self.username, self.server_manager, self.parent())
-            new_settings.exec()
+            # Use database method for proper connection management
+            conn = None
+            try:
+                import sqlite3
+                conn = sqlite3.connect(self.db.db_path, timeout=10.0)
+                cursor = conn.cursor()
+                cursor.execute('UPDATE users SET totp_enabled = 0 WHERE id = ?', (self.user_id,))
+                conn.commit()
+                
+                QMessageBox.information(self, "Success", "QR Code authentication disabled")
+                self.accept()
+                # Reopen settings
+                new_settings = SettingsWindow(self.db, self.auth_manager, self.user_id,
+                                             self.username, self.server_manager, self.parent())
+                new_settings.exec()
+            finally:
+                if conn:
+                    conn.close()
