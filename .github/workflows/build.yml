@@ -57,10 +57,13 @@ jobs:
         xcopy /E /I desktop_app\config desktop_app\dist\ArmaReforgerMap\config
     
     - name: Copy documentation to dist
+      shell: pwsh
       run: |
-        copy desktop_app\README.md desktop_app\dist\ArmaReforgerMap\
-        copy desktop_app\CHANGELOG.md desktop_app\dist\ArmaReforgerMap\
-        if exist desktop_app\docs\QUICKSTART.md copy desktop_app\docs\QUICKSTART.md desktop_app\dist\ArmaReforgerMap\
+        Copy-Item desktop_app\README.md desktop_app\dist\ArmaReforgerMap\
+        Copy-Item desktop_app\CHANGELOG.md desktop_app\dist\ArmaReforgerMap\
+        if (Test-Path desktop_app\docs\QUICKSTART.md) {
+          Copy-Item desktop_app\docs\QUICKSTART.md desktop_app\dist\ArmaReforgerMap\
+        }
     
     - name: Create portable release package
       run: |
