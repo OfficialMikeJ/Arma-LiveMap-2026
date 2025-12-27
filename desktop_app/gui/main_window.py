@@ -36,22 +36,28 @@ class WebSocketClient(QThread):
     async def connect(self):
         uri = f"ws://{self.host}:{self.port}"
         try:
-            async with websockets.connect(uri) as websocket:
-                self.websocket = websocket
-                self.connected.emit()
-                
-                while self.running:
-                    try:
-                        message = await asyncio.wait_for(websocket.recv(), timeout=0.1)
-                        data = json.loads(message)
-                        self.message_received.emit(data)
-                    except asyncio.TimeoutError:
-                        continue
-                    except websockets.exceptions.ConnectionClosed:
-                        break
+            # Connect to WebSocket server
+            self.websocket = await websockets.connect(uri)
+            self.connected.emit()
+            
+            # Listen for messages
+            while self.running:
+                try:
+                    message = await asyncio.wait_for(self.websocket.recv(), timeout=0.1)
+                    data = json.loads(message)
+                    self.message_received.emit(data)
+                except asyncio.TimeoutError:
+                    continue
+                except websockets.exceptions.ConnectionClosed:
+                    break
+                except Exception as e:
+                    print(f"Error receiving message: {e}")
+                    break
         except Exception as e:
             print(f"WebSocket connection error: {e}")
         finally:
+            if self.websocket:
+                await self.websocket.close()
             self.disconnected.emit()
     
     def send_message(self, data):
