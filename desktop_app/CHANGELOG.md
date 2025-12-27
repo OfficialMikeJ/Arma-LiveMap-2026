@@ -7,6 +7,64 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.099.023] - 2026 (In Development)
+
+### Added
+- **Real-Time WebSocket Functionality**
+  - Enhanced WebSocket server with logging and error handling
+  - Player position tracking and synchronization
+  - Chat message broadcasting support
+  - Ping/pong for connection health monitoring
+  - Automatic marker and position sync for new clients
+  
+- **Arma Server Integration**
+  - New `ArmaServerConnector` class for game server communication
+  - Simulated player position updates for testing
+  - Server info querying (map, player count, status)
+  - Foundation for real Arma Reforger API integration
+
+- **Admin Dashboard**
+  - Complete feedback management interface
+  - View all user submissions in table format
+  - Detailed feedback viewer
+  - Export feedback to CSV
+  - Statistics and filtering
+
+- **Documentation**
+  - Comprehensive WebSocket server guide
+  - Message protocol documentation
+  - Deployment instructions (systemd, Docker)
+  - Troubleshooting guide
+
+### Improved
+- **WebSocket Client**
+  - Better message sending with proper async handling
+  - Improved error handling and connection management
+  - More robust send_message() implementation
+
+- **Feedback System**
+  - Cleaner UI messages
+  - Better user communication
+  - Updated to version 0.099.023
+
+- **Code Organization**
+  - Moved all documentation to `docs/` folder
+  - Consolidated scattered .md files
+  - Cleaner project root directory
+
+### Fixed
+- TOTP disable function now uses proper database connection management
+- WebSocket message sending edge cases
+- Database connection cleanup in settings window
+
+### Technical
+- Added standalone WebSocket server script (`run_websocket_server.py`)
+- Created `ArmaServerConnector` for future game integration
+- Built admin dashboard for feedback management
+- Improved logging throughout WebSocket layer
+
+---
+
 ## [0.099.022] - 2026 (In Development)
 
 ### Added

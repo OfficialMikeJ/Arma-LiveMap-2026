@@ -145,7 +145,7 @@ class FeedbackDialog(QDialog):
             'email': email if email else 'not_provided',
             'subject': subject,
             'feedback': feedback,
-            'version': '0.099.022'
+            'version': '0.099.023'
         }
         
         # Save to local file (will be synced to admin dashboard in future)
