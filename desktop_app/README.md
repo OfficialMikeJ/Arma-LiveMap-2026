@@ -1,7 +1,7 @@
 # Arma Reforger Live Interactive Map
 
-**Current Version:** 0.096.014 (December 2025)  
-**Next Release:** 0.099.021 (2026)
+**Current Version:** 0.099.022 (In Development)  
+**Latest Stable:** 0.096.014 (December 2025)
 
 ---
 

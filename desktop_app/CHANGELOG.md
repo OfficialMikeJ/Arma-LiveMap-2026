@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.099.022] - 2026 (In Development)
+
+### Added
+- **Custom Server Quick Input**
+  - New "Custom Server" button in main toolbar
+  - Quick dialog for entering server IP and port
+  - Validation for IP addresses and hostnames
+  - Option to save servers permanently or connect temporarily
+  - Default port (2302) pre-filled for Arma Reforger
+  - Support for both IPv4 addresses (192.168.1.100) and hostnames (server.example.com)
+
+### Fixed
+- **Database Lock Issue** (CRITICAL FIX)
+  - Fixed `sqlite3.OperationalError: database is locked` errors in test suite
+  - Implemented proper connection cleanup with try/finally blocks
+  - Added 10-second connection timeout to prevent indefinite locks
+  - All database methods now guarantee connection closure
+
+### Technical
+- Enhanced ServerManager with `add_server()` and `remove_server()` methods
+- Improved database connection management across all operations
+- Better error handling in database layer
+
+---
+
 ## [0.099.021] - 2026 (Planned Release)
 
 ### Added
