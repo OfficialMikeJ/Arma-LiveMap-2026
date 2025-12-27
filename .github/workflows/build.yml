@@ -43,7 +43,7 @@ jobs:
       shell: bash
       run: |
         cd desktop_app
-        VERSION=$(python -c "import re; content = open('gui/main_window.py', encoding='utf-8').read(); print(re.search(r'VERSION = \"(.+?)\"', content).group(1))")
+        VERSION=$(python scripts/extract_version.py gui/main_window.py)
         echo "version=$VERSION" >> $GITHUB_OUTPUT
         echo "Detected version: $VERSION"
     
