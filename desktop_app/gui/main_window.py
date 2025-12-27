@@ -64,12 +64,12 @@ class WebSocketClient(QThread):
         """Send message to WebSocket server"""
         if self.websocket and not self.websocket.closed:
             try:
-                # Create new event loop for sending
-                loop = asyncio.new_event_loop()
-                loop.run_until_complete(self.websocket.send(json.dumps(data)))
-                loop.close()
+                # Create task to send message asynchronously
+                asyncio.create_task(self.websocket.send(json.dumps(data)))
             except Exception as e:
                 print(f"Error sending message: {e}")
+        else:
+            print("WebSocket not connected, cannot send message")
     
     def stop(self):
         self.running = False
