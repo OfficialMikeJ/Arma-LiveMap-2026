@@ -36,7 +36,7 @@ class VersionUpdater:
         full_path = os.path.join(self.base_dir, filepath)
         
         if not os.path.exists(full_path):
-            print(f"  ⚠ File not found: {filepath}")
+            print(f"  [SKIP] File not found: {filepath}")
             return False
         
         with open(full_path, 'r', encoding='utf-8') as f:
@@ -59,7 +59,7 @@ class VersionUpdater:
         if updated:
             with open(full_path, 'w', encoding='utf-8') as f:
                 f.write(content)
-            print(f"  ✓ Updated: {filepath}")
+            print(f"  [OK] Updated: {filepath}")
             return True
         
         return False
@@ -92,10 +92,10 @@ class VersionUpdater:
         })
         
         self.save_versions(versions)
-        print(f"  ✓ Updated: versions.json")
+        print(f"  [OK] Updated: versions.json")
         
         print("\n" + "=" * 60)
-        print(f"✅ Version updated to {new_version}")
+        print(f"Version updated to {new_version}")
         print("=" * 60)
         
         return True
