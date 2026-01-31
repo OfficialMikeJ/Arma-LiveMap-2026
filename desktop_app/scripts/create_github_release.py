@@ -50,17 +50,17 @@ class GitHubReleaseManager:
         response = requests.post(url, headers=self.headers, json=data)
         
         if response.status_code == 201:
-            print(f"✓ Release {version} created successfully!")
+            print(f"[OK] Release {version} created successfully!")
             return response.json()
         else:
-            print(f"✗ Failed to create release: {response.status_code}")
+            print(f"[ERROR] Failed to create release: {response.status_code}")
             print(f"  Error: {response.text}")
             return None
     
     def upload_asset(self, release_id, file_path, asset_name=None):
         """Upload an asset to a release"""
         if not os.path.exists(file_path):
-            print(f"✗ File not found: {file_path}")
+            print(f"[ERROR] File not found: {file_path}")
             return None
         
         if not asset_name:
@@ -77,10 +77,10 @@ class GitHubReleaseManager:
             response = requests.post(url, headers=headers, params=params, data=f)
         
         if response.status_code == 201:
-            print(f"✓ Asset uploaded: {asset_name}")
+            print(f"[OK] Asset uploaded: {asset_name}")
             return response.json()
         else:
-            print(f"✗ Failed to upload asset: {response.status_code}")
+            print(f"[ERROR] Failed to upload asset: {response.status_code}")
             return None
     
     def delete_release(self, release_id):
@@ -89,7 +89,7 @@ class GitHubReleaseManager:
         response = requests.delete(url, headers=self.headers)
         
         if response.status_code == 204:
-            print(f"✓ Release deleted: {release_id}")
+            print(f"[OK] Release deleted: {release_id}")
             return True
         return False
 
@@ -135,15 +135,15 @@ def main():
     
     # Validate inputs
     if not github_token:
-        print("✗ Error: GITHUB_TOKEN not set")
+        print("[ERROR] Error: GITHUB_TOKEN not set")
         sys.exit(1)
     
     if not repo_owner or not repo_name:
-        print("✗ Error: Repository information not available")
+        print("[ERROR] Error: Repository information not available")
         sys.exit(1)
     
     if not version:
-        print("✗ Error: RELEASE_VERSION not set")
+        print("[ERROR] Error: RELEASE_VERSION not set")
         sys.exit(1)
     
     print(f"Repository: {repo_owner}/{repo_name}")
@@ -156,7 +156,7 @@ def main():
     # Read release notes from changelog
     print("\nReading release notes from CHANGELOG...")
     release_notes = read_changelog(changelog_path, version)
-    print(f"✓ Release notes loaded ({len(release_notes)} chars)")
+    print(f"[OK] Release notes loaded ({len(release_notes)} chars)")
     
     # Create release
     print("\nCreating GitHub release...")
@@ -166,18 +166,18 @@ def main():
         sys.exit(1)
     
     release_id = release['id']
-    print(f"✓ Release ID: {release_id}")
-    print(f"✓ Release URL: {release['html_url']}")
+    print(f"[OK] Release ID: {release_id}")
+    print(f"[OK] Release URL: {release['html_url']}")
     
     # Upload asset if provided
     if asset_path and os.path.exists(asset_path):
         print(f"\nUploading asset: {asset_path}")
         asset = manager.upload_asset(release_id, asset_path)
         if asset:
-            print(f"✓ Asset URL: {asset['browser_download_url']}")
+            print(f"[OK] Asset URL: {asset['browser_download_url']}")
     
     print("\n" + "=" * 60)
-    print("✅ Release created successfully!")
+    print("[SUCCESS] Release created successfully!")
     print("=" * 60)
     
     # Output for GitHub Actions
