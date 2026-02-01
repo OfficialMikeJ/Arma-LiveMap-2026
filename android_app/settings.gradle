@@ -1,0 +1,2 @@
+rootProject.name = "ArmaReforgerTacticalMap"
+include ':app'
