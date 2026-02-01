@@ -46,6 +46,7 @@ app.whenReady().then(async () => {
 
   // Setup IPC handlers
   setupIPCHandlers();
+  setupWebSocketHandlers();
 
   createWindow();
 
@@ -131,9 +132,11 @@ function setupIPCHandlers() {
   });
 }
 
-// Handle marker updates from WebSocket
-wsServer.on('marker', (data: any) => {
-  if (mainWindow && !mainWindow.isDestroyed()) {
-    mainWindow.webContents.send('marker:update', data);
-  }
-});
+// Handle marker updates from WebSocket (moved inside whenReady)
+function setupWebSocketHandlers() {
+  wsServer.on('marker', (data: any) => {
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.webContents.send('marker:update', data);
+    }
+  });
+}

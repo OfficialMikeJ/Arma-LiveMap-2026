@@ -150,7 +150,7 @@ export class DatabaseService {
     this.db.prepare('INSERT INTO sessions (user_id, token, device_id, expires_at) VALUES (?, ?, ?, ?)').run(userId, token, deviceId, expiresAt.toISOString());
   }
 
-  getSessionByToken(token: string) {
+  getSessionByToken(token: string): any {
     return this.db.prepare('SELECT * FROM sessions WHERE token = ? AND expires_at > datetime("now")').get(token);
   }
 
