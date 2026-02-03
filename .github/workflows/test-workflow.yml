@@ -9,28 +9,28 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: List directory structure
-      run: |
-        echo "=== Root directory ==="
-        ls -la
-        echo ""
-        echo "=== Electron app ==="
-        ls -la electron_app/ || echo "Electron app directory not found"
-        echo ""
-        echo "=== Android app ==="
-        ls -la android_app/ || echo "Android app directory not found"
+      - name: List directory structure
+        run: |
+          echo "=== Root directory ==="
+          ls -la
+          echo ""
+          echo "=== Electron app ==="
+          ls -la electron_app/ || echo "Electron app directory not found"
+          echo ""
+          echo "=== Android app ==="
+          ls -la android_app/ || echo "Android app directory not found"
 
-    - name: Check Node.js
-      run: |
-        node --version
-        npm --version
+      - name: Check Node.js
+        run: |
+          node --version
+          npm --version
 
-    - name: Check Java
-      run: |
-        java -version
+      - name: Check Java
+        run: |
+          java -version
 
-    - name: Success message
-      run: echo "✅ GitHub Actions is working correctly!"
+      - name: Success message
+        run: echo "✅ GitHub Actions is working correctly!"
