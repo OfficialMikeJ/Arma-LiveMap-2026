@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Military green colors -->
+    <color name="military_500">#4a7c4a</color>
+    <color name="military_600">#3a643a</color>
+    <color name="military_700">#2e4d2e</color>
+    
+    <!-- Tactical dark theme -->
+    <color name="tactical_bg">#1a1a1a</color>
+    <color name="tactical_surface">#2d2d2d</color>
+    <color name="tactical_border">#404040</color>
+    <color name="tactical_text">#e0e0e0</color>
+    
+    <!-- Material3 colors -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>
